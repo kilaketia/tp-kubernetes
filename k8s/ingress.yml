@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kpage-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: killian.amnay.fr 
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: kpage-service
+            port:
+              number: 80
