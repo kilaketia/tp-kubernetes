@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kpage-secret
+data:
+  .secret: "It just works"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kpage-motd-deployment
+  labels:
+    app: kpage-motd-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: kpage-motd-api
+  template:
+    metadata:
+      labels:
+        app: kpage-motd-api
+        app.kubernetes.io/name: kpage-motd-api
+    spec:
+      containers:
+      - name: kpage-motd-api
+        image: kilaketia/motd-api:v2
+        ports:
+        - containerPort: 80
+        env:
+          - name: APP_PORT
+            value: "80"
+      initContainers:
+      - name: init-motd
+        image: kilaketia/motd-init:v1  
+        env:
+          - name: MESSAGE
+            valueFrom:
+              secretKeyRef:
+                name: kpage-secret
+                key: .secret
