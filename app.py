@@ -4,7 +4,9 @@ import sys
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
 
-MESSAGE = os.environ.get('MESSAGE')
+#MESSAGE = os.environ.get('MESSAGE')
+with open('message.txt') as f:
+    MESSAGE = f.readline()
 APP_PORT = os.environ.get('APP_PORT')
 
 # creating the flask app
@@ -12,7 +14,7 @@ app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False 
 api = Api(app)
 
-class get(Resource):
+class get(Resource):kubectl delete namespace
     def get(self):
         return {"message": MESSAGE}, 200
 
