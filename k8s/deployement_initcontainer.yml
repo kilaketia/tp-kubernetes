@@ -24,7 +24,7 @@ spec:
     spec:
       containers:
       - name: kpage-motd-api
-        image: kilaketia/motd-api:v2
+        image: kilaketia/motd-api:v2.1
         ports:
         - containerPort: 80
         env:
@@ -35,7 +35,7 @@ spec:
             mountPath: /volume
       initContainers:
       - name: init-motd
-        image: kilaketia/motd-init:v1  
+        image: kilaketia/motd-init:v1.1
         env:
           - name: MESSAGE
             valueFrom:
@@ -46,4 +46,6 @@ spec:
           - name: config
             mountPath: /volume
       volumes:
-        - config
+        - name: config
+          emptyDir:
+            sizeLimit: 1Mi
