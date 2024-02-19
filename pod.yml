@@ -2,9 +2,10 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: kpage_motd-api
+  name: kpage-motd-api
   labels:
     app: motd
+    app.kubernetes.io/name: kpage-motd-api
 spec:
   containers:
   - name: motd
