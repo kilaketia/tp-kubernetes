@@ -5,47 +5,38 @@ metadata:
 stringData:
   secret: "It just works"
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
-  name: kpage-motd-deployment
+  name: kpage-motd-api
   labels:
-    app: kpage-motd-api
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: kpage-motd-api
-  template:
-    metadata:
-      labels:
-        app: kpage-motd-api
-        app.kubernetes.io/name: kpage-motd-api
-    spec:
-      containers:
-      - name: kpage-motd-api
-        image: kilaketia/motd-api:v2.1
-        ports:
-        - containerPort: 80
-        env:
-          - name: APP_PORT
-            value: "80"
-        volumeMounts:
-          - name: config
-            mountPath: /volume
-      initContainers:
-      - name: init-motd
-        image: kilaketia/motd-init:v1.2
-        env:
-          - name: MESSAGE
-            valueFrom:
-              secretKeyRef:
-                name: kpage-secret
-                key: secret
-        volumeMounts:
-          - name: config
-            mountPath: /volume
-      volumes:
+    app: motd
+    app.kubernetes.io/name: kpage-motd-api
+  spec:
+    containers:
+    - name: kpage-motd-api
+      image: kilaketia/motd-api:v2.2
+      ports:
+      - containerPort: 80
+      env:
+        - name: APP_PORT
+          value: "80"
+      volumeMounts:
         - name: config
-          emptyDir:
-            sizeLimit: 1Mi
+          mountPath: /volume
+    initContainers:
+    - name: init-motd
+      image: kilaketia/motd-init:v1.2
+      env:
+        - name: MESSAGE
+          valueFrom:
+            secretKeyRef:
+              name: kpage-secret
+              key: secret
+      volumeMounts:
+        - name: config
+          mountPath: /volume
+    volumes:
+      - name: config
+        emptyDir:
+          sizeLimit: 1Mi
