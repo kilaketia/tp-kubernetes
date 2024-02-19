@@ -5,7 +5,7 @@ from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
 
 #MESSAGE = os.environ.get('MESSAGE')
-with open('/message.txt') as f:
+with open('/volume/message.txt') as f:
     try:
         MESSAGE = f.readline()
     except:
