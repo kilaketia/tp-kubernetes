@@ -5,8 +5,11 @@ from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
 
 #MESSAGE = os.environ.get('MESSAGE')
-with open('message.txt') as f:
-    MESSAGE = f.readline()
+with open('/volume/message.txt') as f:
+    try:
+        MESSAGE = f.readline()
+    except:
+        print("Lecture du fichier impossible !")
 APP_PORT = os.environ.get('APP_PORT')
 
 # creating the flask app
