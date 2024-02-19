@@ -8,4 +8,3 @@ RUN mkdir -p /data/
 
 ENTRYPOINT ["python3"]
 CMD ["app.py"]
-app.py Dockerfile
