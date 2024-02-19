@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kpage_motd-api
+  labels:
+    app: motd
+spec:
+  containers:
+  - name: motd
+    image: kilaketia/motd-api:v1
+    env:
+    - name: MESSAGE
+      value: "Hello, world!"
+    - name: APP_PORT
+      value: "80"
