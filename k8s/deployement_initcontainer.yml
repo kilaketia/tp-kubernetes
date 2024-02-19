@@ -35,7 +35,7 @@ spec:
             mountPath: /volume
       initContainers:
       - name: init-motd
-        image: kilaketia/motd-init:v1.1
+        image: kilaketia/motd-init:v1.2
         env:
           - name: MESSAGE
             valueFrom:

@@ -17,7 +17,7 @@ app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False 
 api = Api(app)
 
-class get(Resource):kubectl delete namespace
+class get(Resource):
     def get(self):
         return {"message": MESSAGE}, 200
 
