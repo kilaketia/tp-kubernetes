@@ -35,7 +35,7 @@ class get(Resource):
             cursor.execute("SELECT value FROM keysta WHERE keyname='message'")
             result = cursor.fetchone()
             if result:
-                MESSAGE = result
+                MESSAGE = result[0]
             else:
                 MESSAGE = "ERROR"
         else: 
