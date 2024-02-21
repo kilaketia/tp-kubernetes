@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  mariadb:
+    image: mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: admin
+
+  app:
+    build: .
+    environment:
+      - APP_PORT=80
+    ports: 
+      - 8080:80

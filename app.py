@@ -1,47 +1,12 @@
 import os
 import json
 import sys
+import logger
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
 import mysql.connector
 
 APP_PORT = os.environ.get('APP_PORT')
-
-mydb = mysql.connector.connect(
-  host="mariadb-service.killian-page.svc.cluster.local",
-  user="root",
-  password="admin"
-)
-
-cursor = mydb.cursor()
-
-cursor.execute("show databases;")
-for db in cursor:
-    if db == "configs":
-        dbCreated = True
-    else: 
-        dbCreated = False
-    
-if dbCreated: 
-    cursor.execute("USE configs")
-    cursor.execute("SELECT value FROM keysta WHERE keyname='message'")
-    result = cursor.fetchone()
-    if result:
-        MESSAGE = result
-        return result  # Return the value of 'message'
-    else:
-        return None  # If 'message' entry doesn't exist
-else: 
-    cursor.execute("CREATE DATABASE IF NOT EXISTS configs")
-    cursor.execute("USE configs")
-    cursor.execute('''CREATE TABLE IF NOT EXISTS keysta
-                     (keyname VARCHAR(255) PRIMARY KEY, value VARCHAR(255))''')
-    cursor.execute('INSERT INTO keysta VALUES ("message","DB works")')
-    mydb.commit()
-    MESSAGE = "Just been initialized"
-
-cursor.close()
-mydb.close()
 
 # creating the flask app
 app = Flask(__name__)
@@ -50,6 +15,41 @@ api = Api(app)
 
 class get(Resource):
     def get(self):
+        mydb = mysql.connector.connect(
+            host="mariadb",
+            user="root",
+            password="admin"
+        )
+        cursor = mydb.cursor()
+        cursor.execute("show databases")
+        res = cursor.fetchall()
+        dbCreated = False
+        res = str(res)
+        if "configs" in res:
+            dbCreated = True
+        else: 
+            dbCreated = False
+
+        if dbCreated: 
+            cursor.execute("USE configs")
+            cursor.execute("SELECT value FROM keysta WHERE keyname='message'")
+            result = cursor.fetchone()
+            if result:
+                MESSAGE = result
+            else:
+                MESSAGE = "ERROR"
+        else: 
+            cursor.execute("CREATE DATABASE IF NOT EXISTS configs")
+            cursor.execute("USE configs")
+            cursor.execute('''CREATE TABLE IF NOT EXISTS keysta
+                            (keyname VARCHAR(255) PRIMARY KEY, value VARCHAR(255))''')
+            cursor.execute('INSERT INTO keysta VALUES ("message","DB works")')
+            mydb.commit()
+            MESSAGE = "Just been initialized"
+
+            cursor.close()
+            mydb.close()
+
         return {"message": MESSAGE}, 200
 
 api.add_resource(get, "/")

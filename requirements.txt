@@ -1,3 +1,4 @@
 flask
 flask_restful
 mysql-connector-python
+logger
