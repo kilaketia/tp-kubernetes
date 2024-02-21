@@ -16,7 +16,7 @@ api = Api(app)
 class get(Resource):
     def get(self):
         mydb = mysql.connector.connect(
-            host="mariadb",
+            host="mariadb-service.killian-page.svc.cluster.local",
             user="root",
             password="admin"
         )
