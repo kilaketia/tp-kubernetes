@@ -1,7 +1,7 @@
 #!/bin/bash
 
 hash="$(git rev-parse HEAD)"
-hash=${hash:-6}
+hash=${hash:0:6}
 
 docker build -t kilaketia/motd-api:$hash .
 docker push kilaketia/motd-api:$hash
