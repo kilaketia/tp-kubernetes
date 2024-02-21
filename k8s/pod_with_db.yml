@@ -58,7 +58,7 @@ metadata:
 spec:
   containers:
   - name: motd
-    image: kilaketia/motd-api:v3.7.1
+    image: kilaketia/motd-api:HASH
     env:
     - name: APP_PORT
       value: "80"
